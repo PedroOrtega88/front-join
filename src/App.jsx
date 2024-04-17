@@ -1,8 +1,7 @@
-import {useEffect, useState} from "react"
-import {BrowserRouter as Router, Route, Routes, Link} from "react-router-dom"
-import Home from './Home.jsx'
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import Home from './Home.jsx';
 import ItemDetailPage from './ItemDetailPage.jsx';
-import InputCreate from './InputCreate.jsx';
 import InputCreate from './InputCreate.jsx';
 
 
@@ -29,6 +28,7 @@ const App = () => {
     
    useEffect(() =>{
     fetchData()
+  }, []);
 
     const addTask = async (task) => {
       try {
@@ -48,7 +48,7 @@ const App = () => {
 
 
 
-   }, [])
+
    
    return (
   <Router>
