@@ -1,30 +1,52 @@
-import React, { useState } from "react";
+import { useState } from 'react'
 
-const InputCreate = ({ addTask }) => {
-  const [taskInput, setTaskInput] = useState("");
+function InputCreate () {
+  const [title, setTitle] = useState('')
+  const [res, setRes] = useState('')
 
-  const handleInputChange = (e) => {
-    setTaskInput(e.target.value);
-  };
 
-  const handleSubmit = () => {
-    if (taskInput.trim() !== "") {
-      addTask(taskInput);
-      setTaskInput("");
+  const haddleSubmit = async (event) => {
+    event.preventDefault()
+
+    const urlApiCreate = import.meta.env.VITE_APP_API_URL+'create'
+    const payload = { title }
+
+    try {
+      const post = await fetch(urlApiCreate, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if(post.ok) {
+        const data = await post.json()
+        setRes(data.title)
+        setTitle('')
+      }
+
+    } catch (err) {
+      console.log(err)
     }
-  };
+  }
+
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Introduce una nueva tarea"
-        value={taskInput}
-        onChange={handleInputChange}
+    <>
+    <form onSubmit={haddleSubmit}>
+      <input 
+        type='text'
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder='Añade tarea'
+        required
       />
-      <button onClick={handleSubmit}>Añadir tarea</button>
-    </div>
-  );
-};
+      <button type='submit'>Añadir</button>
+    </form>
+    <div>{`Se ha enviado: ${res}`}</div>
+    </>
+  )
+}
 
-export default InputCreate;
+export default InputCreate
